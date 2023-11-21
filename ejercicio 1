@@ -1,0 +1,88 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
+
+#define N 30
+
+
+void llenarMatriz(int matriz[N][N]) 
+{
+	int i, j;
+    for (i = 0; i < N; i++) 
+	{
+        for (j = 0; j < N; j++) 
+		{
+            matriz[i][j] = rand() % 10;
+        }
+    }
+}
+
+
+void imprimirMatriz(int matriz[N][N]) 
+{
+	int i, j;
+    for (i = 0; i < N; i++) 
+	{
+        for (j = 0; j < N; j++) 
+		{
+            printf("%d ", matriz[i][j]);
+        }
+        printf("\n");
+    }
+    printf("\n");
+}
+
+
+void multiplicarMatrices(int matrizA[N][N], int matrizB[N][N], int resultado[N][N]) 
+{
+	int i, j, k;
+    for (i = 0; i < N; i++) 
+	{
+        for (j = 0; j < N; j++) 
+		{
+            resultado[i][j] = 0;
+            for (k = 0; k < N; k++) 
+			{
+                resultado[i][j] += matrizA[i][k] * matrizB[k][j];
+            }
+        }
+    }
+}
+
+
+double medirTiempoMultiplicacion(int matrizA[N][N], int matrizB[N][N], int resultado[N][N]) {
+    clock_t inicio = clock();
+    multiplicarMatrices(matrizA, matrizB, resultado);
+    clock_t fin = clock();
+
+    
+    return ((double)(fin - inicio)) / CLOCKS_PER_SEC * 1000.0;
+}
+
+int main() {
+   
+    int matrizA[N][N];
+    int matrizB[N][N];
+    int resultado[N][N];
+
+
+    srand(time(NULL));
+    llenarMatriz(matrizA);
+    llenarMatriz(matrizB);
+
+
+    printf("Matriz A:\n");
+    imprimirMatriz(matrizA);
+    printf("Matriz B:\n");
+    imprimirMatriz(matrizB);
+
+    double tiempoEjecucion = medirTiempoMultiplicacion(matrizA, matrizB, resultado);
+
+
+    printf("Resultado de la multiplicacion:\n");
+    imprimirMatriz(resultado);
+
+    printf("Tiempo de ejecucion: %.2f milisegundos\n", tiempoEjecucion);
+
+    return 0;
+}
